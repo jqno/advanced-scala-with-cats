@@ -1,0 +1,1 @@
+I'm doing the exercises for Underscore.io's [Advanced Scala with Cats](http://www.underscore.io/training/courses/advanced-scala/) and you can follow along right here! 
