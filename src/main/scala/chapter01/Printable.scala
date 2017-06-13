@@ -22,8 +22,12 @@ object PrintableInstances {
     override def format(a: Int): String = a.toString
   }
   implicit val printableCat = new Printable[Cat] {
-    override def format(a: Cat): String =
-      s"${a.name} is a ${a.age} year old ${a.color} cat."
+    override def format(a: Cat): String = {
+      val name = Printable.format(a.name)
+      val age = Printable.format(a.age)
+      val color = Printable.format(a.color)
+      s"$name is a $age year old $color cat."
+    }
   }
 }
 
