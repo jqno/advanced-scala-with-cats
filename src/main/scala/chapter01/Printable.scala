@@ -31,3 +31,12 @@ object PrintableInstances {
   }
 }
 
+object PrintableSyntax {
+  implicit class PrintOps[A](a: A) {
+    def format(implicit printable: Printable[A]): String =
+      Printable.format(a)
+
+    def print(implicit printable: Printable[A]): Unit =
+      a.format
+  }
+}
