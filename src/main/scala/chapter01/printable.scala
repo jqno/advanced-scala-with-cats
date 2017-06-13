@@ -12,7 +12,7 @@ object Printable {
     println(format(a))
 }
 
-final case class Cat(name: String, age: Int, color: String)
+
 
 object PrintableInstances {
   implicit val printableString = new Printable[String] {

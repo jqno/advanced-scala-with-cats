@@ -1,8 +1,8 @@
 package chapter01
 
+import chapter01.PrintableInstances._
+import chapter01.PrintableSyntax._
 import org.scalatest.{FlatSpec, Matchers}
-import PrintableInstances._
-import PrintableSyntax._
 
 class PrintableTest extends FlatSpec with Matchers {
 
