@@ -27,6 +27,28 @@ class TruthTest extends FlatSpec with Matchers {
   }
 
 
+  behavior of "xorMonoid"
+
+  it should "follow the identity law" in {
+    checkIdentity(MonoidInstances.xorMonoid, booleans)
+  }
+
+  it should "follow the associativity law" in {
+    checkAssociativity(MonoidInstances.xorMonoid, booleans)
+  }
+
+
+  behavior of "eqMonoid"
+
+  it should "follow the identity law" in {
+    checkIdentity(MonoidInstances.eqMonoid, booleans)
+  }
+
+  it should "follow the associativity law" in {
+    checkAssociativity(MonoidInstances.eqMonoid, booleans)
+  }
+
+
   val booleans = List(true, false)
 
   def checkIdentity[A](monoid: Monoid[A], generator: List[A]): Unit = {
