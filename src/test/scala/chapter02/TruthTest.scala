@@ -8,53 +8,43 @@ class TruthTest extends FlatSpec with Matchers {
   behavior of "andMonoid"
 
   it should "follow the identity law" in {
-    implicit val monoid = MonoidInstances.andMonoid
-
-    val results = for {
-      b <- booleans
-    } yield identityLaw(b)
-
-    results should contain only true
+    checkIdentity(MonoidInstances.andMonoid, booleans)
   }
 
   it should "follow the associativity law" in {
-    implicit val monoid = MonoidInstances.andMonoid
-
-    val results = for {
-      a <- booleans
-      b <- booleans
-      c <- booleans
-    } yield associativeLaw(a, b, c)
-
-    results should contain only true
+    checkAssociativity(MonoidInstances.andMonoid, booleans)
   }
 
 
   behavior of "orMonoid"
 
   it should "follow the identity law" in {
-    implicit val monoid = MonoidInstances.orMonoid
-
-    val results = for {
-      b <- booleans
-    } yield identityLaw(b)
-
-    results should contain only true
+    checkIdentity(MonoidInstances.orMonoid, booleans)
   }
 
   it should "follow the associativity law" in {
-    implicit val monoid = MonoidInstances.orMonoid
-
-    val results = for {
-      a <- booleans
-      b <- booleans
-      c <- booleans
-    } yield associativeLaw(a, b, c)
-
-    results should contain only true
+    checkAssociativity(MonoidInstances.orMonoid, booleans)
   }
 
 
   val booleans = List(true, false)
+
+  def checkIdentity[A](monoid: Monoid[A], generator: List[A]): Unit = {
+    val results = for {
+      a <- generator
+    } yield identityLaw(a)(monoid)
+
+    results should contain only true
+  }
+
+  def checkAssociativity[A](monoid: Monoid[A], generator: List[A]): Unit = {
+    val results = for {
+      a <- generator
+      b <- generator
+      c <- generator
+    } yield associativeLaw(a, b, c)(monoid)
+
+    results should contain only true
+  }
 
 }
