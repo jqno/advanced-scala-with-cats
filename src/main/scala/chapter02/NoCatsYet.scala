@@ -24,7 +24,7 @@ object NoCatsYet {
 
   val booleans = List(true, false)
 
-  def checkIdentity[A](monoid: Monoid[A], generator: List[A]): Boolean = {
+  def checkIdentity[A](generator: List[A])(monoid: Monoid[A]): Boolean = {
     val results = for {
       a <- generator
     } yield identityLaw(a)(monoid)
@@ -32,7 +32,7 @@ object NoCatsYet {
     results.forall(identity)
   }
 
-  def checkAssociativity[A](monoid: Monoid[A], generator: List[A]): Boolean = {
+  def checkAssociativity[A](generator: List[A])(monoid: Monoid[A]): Boolean = {
     val results = for {
       a <- generator
       b <- generator

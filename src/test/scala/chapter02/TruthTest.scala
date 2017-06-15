@@ -8,44 +8,44 @@ class TruthTest extends FlatSpec with Matchers {
   behavior of "andMonoid"
 
   it should "follow the identity law" in {
-    checkIdentity(TruthInstances.andMonoid, booleans) should be (true)
+    checkIdentity(booleans)(TruthInstances.andMonoid) should be (true)
   }
 
   it should "follow the associativity law" in {
-    checkAssociativity(TruthInstances.andMonoid, booleans) should be (true)
+    checkAssociativity(booleans)(TruthInstances.andMonoid) should be (true)
   }
 
 
   behavior of "orMonoid"
 
   it should "follow the identity law" in {
-    checkIdentity(TruthInstances.orMonoid, booleans) should be (true)
+    checkIdentity(booleans)(TruthInstances.orMonoid) should be (true)
   }
 
   it should "follow the associativity law" in {
-    checkAssociativity(TruthInstances.orMonoid, booleans) should be (true)
+    checkAssociativity(booleans)(TruthInstances.orMonoid) should be (true)
   }
 
 
   behavior of "xorMonoid"
 
   it should "follow the identity law" in {
-    checkIdentity(TruthInstances.xorMonoid, booleans) should be (true)
+    checkIdentity(booleans)(TruthInstances.xorMonoid) should be (true)
   }
 
   it should "follow the associativity law" in {
-    checkAssociativity(TruthInstances.xorMonoid, booleans) should be (true)
+    checkAssociativity(booleans)(TruthInstances.xorMonoid) should be (true)
   }
 
 
   behavior of "eqMonoid"
 
   it should "follow the identity law" in {
-    checkIdentity(TruthInstances.eqMonoid, booleans) should be (true)
+    checkIdentity(booleans)(TruthInstances.eqMonoid) should be (true)
   }
 
   it should "follow the associativity law" in {
-    checkAssociativity(TruthInstances.eqMonoid, booleans) should be (true)
+    checkAssociativity(booleans)(TruthInstances.eqMonoid) should be (true)
   }
 
 }
