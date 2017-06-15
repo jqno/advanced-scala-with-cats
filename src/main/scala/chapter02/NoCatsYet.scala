@@ -15,14 +15,15 @@ object NoCatsYet {
   }
 
 
-  def associativeLaw[A](x: A, y: A, z: A)(implicit m: Monoid[A]): Boolean =
-    m.combine(x, m.combine(y, z)) == m.combine(m.combine(x, y), z)
+  def associativeLaw[A](x: A, y: A, z: A)(implicit sg: Semigroup[A]): Boolean =
+    sg.combine(x, sg.combine(y, z)) == sg.combine(sg.combine(x, y), z)
 
   def identityLaw[A](x: A)(implicit m: Monoid[A]): Boolean =
     (m.combine(x, m.empty) == x) && (m.combine(m.empty, x) == x)
 
 
   val booleans = List(true, false)
+  val sets: List[Set[Int]] = List(Set.empty[Int], Set(1, 2, 3), Set(1, 1), Set(-1, 1))
 
   def checkIdentity[A](generator: List[A])(monoid: Monoid[A]): Boolean = {
     val results = for {
@@ -32,12 +33,12 @@ object NoCatsYet {
     results.forall(identity)
   }
 
-  def checkAssociativity[A](generator: List[A])(monoid: Monoid[A]): Boolean = {
+  def checkAssociativity[A](generator: List[A])(semigroup: Semigroup[A]): Boolean = {
     val results = for {
       a <- generator
       b <- generator
       c <- generator
-    } yield associativeLaw(a, b, c)(monoid)
+    } yield associativeLaw(a, b, c)(semigroup)
 
     results.forall(identity)
   }
