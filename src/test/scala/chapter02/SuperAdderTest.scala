@@ -23,4 +23,12 @@ class SuperAdderTest extends FlatSpec with Matchers {
     val in: List[Option[Int]] = List(Some(1), Some(2), Some(3))
     SuperAdder.add2(in) should be (Some(6))
   }
+
+
+  behavior of "order"
+
+  it should "be able to be summed in add2" in {
+    val in = List(Order(10.0, 2.0), Order(2.0, 1.5))
+    SuperAdder.add2(in) should be (Order(12.0, 3.5))
+  }
 }
