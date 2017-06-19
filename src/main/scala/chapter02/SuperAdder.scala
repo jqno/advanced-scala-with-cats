@@ -8,4 +8,8 @@ object SuperAdder {
     val monoid = Monoid[Int]
     items.foldRight(monoid.empty)(monoid.combine)
   }
+
+  def add2[A](items: List[A])(implicit monoid: Monoid[A]): A = {
+    items.foldRight(monoid.empty)(monoid.combine)
+  }
 }
