@@ -1,8 +1,8 @@
-package chapter01
+package ch01_typeclasses
 
 import cats.instances.all._
 import cats.syntax.show._
-import chapter01.ShowInstances._
+import ch01_typeclasses.ShowInstances._
 import org.scalatest.{FlatSpec, Matchers}
 
 class ShowTest extends FlatSpec with Matchers {

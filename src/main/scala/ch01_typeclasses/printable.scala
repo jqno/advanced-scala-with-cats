@@ -1,4 +1,4 @@
-package chapter01
+package ch01_typeclasses
 
 trait Printable[A] {
   def format(a: A): String

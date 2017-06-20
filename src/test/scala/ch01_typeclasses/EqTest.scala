@@ -1,9 +1,9 @@
-package chapter01
+package ch01_typeclasses
 
 import cats.instances.option._
 import cats.syntax.eq._
 import cats.syntax.option._
-import chapter01.EqInstances._
+import ch01_typeclasses.EqInstances._
 import org.scalatest.{FlatSpec, Matchers, NonImplicitAssertions}
 
 class EqTest extends FlatSpec with Matchers with NonImplicitAssertions {

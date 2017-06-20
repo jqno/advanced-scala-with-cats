@@ -1,4 +1,4 @@
-package chapter02
+package ch02_monoids
 
 import org.scalatest.{FlatSpec, Matchers}
 

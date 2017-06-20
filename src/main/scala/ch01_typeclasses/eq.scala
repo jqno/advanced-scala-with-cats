@@ -1,4 +1,4 @@
-package chapter01
+package ch01_typeclasses
 
 import cats.Eq
 import cats.instances.all._

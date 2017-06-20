@@ -1,6 +1,6 @@
-package chapter02
+package ch02_monoids
 
-import chapter02.NoCatsYet._
+import ch02_monoids.NoCatsYet._
 import org.scalatest.{FlatSpec, Matchers}
 
 class TruthTest extends FlatSpec with Matchers {
