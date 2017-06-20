@@ -1,0 +1,17 @@
+package ch03_functors
+
+import org.scalatest.{FlatSpec, Matchers}
+
+class ContramapTest extends FlatSpec with Matchers {
+
+  behavior of "contramap"
+
+  it should "have a sanitycheck for Printable[Int]" in {
+    contramap.format("4") should be ("4")
+  }
+
+  it should "turn a stringPrintable into an intPrintable" in {
+    implicit val intPrintable = contramap.stringPrintable.contramap[Int](_.toString)
+    contramap.format(4) should be ("4")
+  }
+}
