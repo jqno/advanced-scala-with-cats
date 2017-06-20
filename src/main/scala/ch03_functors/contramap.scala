@@ -15,6 +15,15 @@ object contramap {
     p.format(value)
 
   implicit val stringPrintable = new Printable[String] {
-    override def format(value: String): String = value
+    override def format(value: String): String = "\"" + value + "\""
   }
+  implicit val booleanPrintable = new Printable[Boolean] {
+    override def format(value: Boolean): String =
+      if (value) "yes" else "nope"
+  }
+
+  case class Box[A](value: A)
+
+  implicit def boxPrintable[A](implicit p: Printable[A]): Printable[Box[A]] =
+    p.contramap(_.value)
 }
