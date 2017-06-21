@@ -22,8 +22,6 @@ object contramap {
       if (value) "yes" else "nope"
   }
 
-  case class Box[A](value: A)
-
   implicit def boxPrintable[A](implicit p: Printable[A]): Printable[Box[A]] =
     p.contramap(_.value)
 }

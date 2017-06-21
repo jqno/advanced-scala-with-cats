@@ -1,6 +1,5 @@
 package ch03_functors
 
-import ch03_functors.contramap.Box
 import org.scalatest.{FlatSpec, Matchers}
 
 class ContramapTest extends FlatSpec with Matchers {
