@@ -10,11 +10,11 @@ object SaferFoldingWithEval {
   }
 
   def foldRight2[A, B](as: List[A], acc: B)(fn: (A, B) => B): B = {
-    def loop(ls: List[A], lacc: B): Eval[B] = ls match {
-      case head :: tail => Eval.defer(loop(tail, lacc)).map(fr => fn(head, fr))
-      case Nil => Eval.now(lacc)
+    def loop(ls: List[A], lacc: Eval[B])(lfn: (A, Eval[B]) => Eval[B]): Eval[B] = ls match {
+      case head :: tail => Eval.defer(loop(tail, lacc)(lfn)).map(fr => fn(head, fr))
+      case Nil => lacc
     }
 
-    loop(as, acc).value
+    loop(as, Eval.now(acc))((a, b) => b.map(fn(a, _))).value
   }
 }
