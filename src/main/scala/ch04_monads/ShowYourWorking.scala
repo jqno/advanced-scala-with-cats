@@ -21,7 +21,7 @@ object ShowYourWorking extends App {
       slowly {
         for {
           n <- logged
-          prev <- loop((n - 1).pure[Logged])
+          prev <- if (n == 0) 1.pure[Logged] else loop((n - 1).pure[Logged])
           ans = n * prev
           _ <- Vector(s"fact $n $ans").tell
         } yield ans
