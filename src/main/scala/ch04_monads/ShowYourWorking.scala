@@ -1,6 +1,7 @@
 package ch04_monads
 
 import cats.data.Writer
+import cats.instances.vector._
 import cats.syntax.applicative._
 import cats.syntax.writer._
 
