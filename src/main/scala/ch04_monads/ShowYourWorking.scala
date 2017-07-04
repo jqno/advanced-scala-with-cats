@@ -17,18 +17,14 @@ object ShowYourWorking extends App {
     try body finally Thread.sleep(100)
 
   def factorial(n: Int): Int = {
-    def loop(logged: Logged[Int]): Logged[Int] = {
-      slowly {
-        for {
-          n <- logged
-          prev <- if (n == 0) 1.pure[Logged] else loop((n - 1).pure[Logged])
-          ans = n * prev
-          _ <- Vector(s"fact $n $ans").tell
-        } yield ans
-      }
+    def loop(nn: Int): Logged[Int] = {
+      for {
+        ans <- if (nn == 0) 1.pure[Logged] else slowly(loop(nn - 1).map(_ * nn))
+        _ <- Vector(s"fact $nn $ans").tell
+      } yield ans
     }
 
-    val (log, ans) = loop(n.pure[Logged]).run
+    val (log, ans) = loop(n).run
     log.foreach(println)
     ans
   }
