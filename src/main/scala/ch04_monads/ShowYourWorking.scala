@@ -16,21 +16,16 @@ object ShowYourWorking extends App {
   def slowly[A](body: => A): A =
     try body finally Thread.sleep(100)
 
-  def factorial(n: Int): Int = {
-    def loop(nn: Int): Logged[Int] = {
-      for {
-        ans <- if (nn == 0) 1.pure[Logged] else slowly(loop(nn - 1).map(_ * nn))
-        _ <- Vector(s"fact $nn $ans").tell
-      } yield ans
-    }
-
-    val (log, ans) = loop(n).run
-    log.foreach(println)
-    ans
+  def factorial(n: Int): Logged[Int] = {
+    for {
+      ans <- if (n == 0) 1.pure[Logged] else slowly(factorial(n - 1).map(_ * n))
+      _ <- Vector(s"fact $n $ans").tell
+    } yield ans
   }
 
-  Await.result(Future.sequence(Vector(
-    Future(factorial(3)),
-    Future(factorial(3))
+  val result = Await.result(Future.sequence(Vector(
+    Future(factorial(3).run),
+    Future(factorial(3).run)
   )), 5.seconds)
+  result.flatMap(_._1).foreach(println)
 }
