@@ -1,6 +1,7 @@
 package ch04_monads
 
 import cats.data.Reader
+import cats.syntax.applicative._
 
 object HackingOnReaders {
   case class Db(usernames: Map[Int, String], passwords: Map[String, String])
@@ -18,7 +19,7 @@ object HackingOnReaders {
       username <- findUsername(userId)
       valid <- username match {
         case Some(u) => checkPassword(u, password)
-        case None => Reader((_: Db) => false)
+        case None => false.pure[DbReader]
       }
     } yield valid
 }
