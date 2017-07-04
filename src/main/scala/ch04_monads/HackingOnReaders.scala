@@ -12,4 +12,13 @@ object HackingOnReaders {
 
   def checkPassword(username: String, password: String): DbReader[Boolean] =
     Reader(_.passwords.get(username).contains(password))
+
+  def checkLogin(userId: Int, password: String): DbReader[Boolean] =
+    for {
+      username <- findUsername(userId)
+      valid <- username match {
+        case Some(u) => checkPassword(u, password)
+        case None => Reader((_: Db) => false)
+      }
+    } yield valid
 }
