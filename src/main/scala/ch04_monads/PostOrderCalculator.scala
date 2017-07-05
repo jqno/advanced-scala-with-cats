@@ -1,6 +1,7 @@
 package ch04_monads
 
 import cats.data.State
+import cats.syntax.applicative._
 
 object PostOrderCalculator {
   type CalcState[A] = State[List[Int], A]
@@ -24,7 +25,7 @@ object PostOrderCalculator {
   }
 
   def evalAll(input: List[String]): CalcState[Int] =
-    input.foldLeft(evalOne("0")) { (state, in) =>
+    input.foldLeft(0.pure[CalcState]) { (state, in) =>
       state.flatMap(_ => evalOne(in))
     }
 }
