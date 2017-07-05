@@ -34,4 +34,16 @@ class PostOrderCalculatorTest extends FlatSpec with Matchers {
     val input = List("1", "2", "+", "3", "4", "*", "+")
     evalAll(input).runA(Nil).value should be (15)
   }
+
+
+  behavior of "evalOne and evalAll together"
+
+  it should "run a program" in {
+    val program = for {
+      _ <- evalAll(List("1", "2", "+"))
+      _ <- evalAll(List("3", "4", "+"))
+      ans <- evalOne("*")
+    } yield ans
+    program.runA(Nil).value should be (21)
+  }
 }
