@@ -22,4 +22,9 @@ object PostOrderCalculator {
         (i :: s, i)
     }
   }
+
+  def evalAll(input: List[String]): CalcState[Int] =
+    input.foldLeft(evalOne("0")) { (state, in) =>
+      state.flatMap(_ => evalOne(in))
+    }
 }

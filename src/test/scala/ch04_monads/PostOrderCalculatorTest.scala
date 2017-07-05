@@ -26,4 +26,12 @@ class PostOrderCalculatorTest extends FlatSpec with Matchers {
     } yield ans
     program.runA(Nil).value should be (3)
   }
+
+
+  behavior of "evalAll"
+
+  it should "run a sequence of computations" in {
+    val input = List("1", "2", "+", "3", "4", "*", "+")
+    evalAll(input).runA(Nil).value should be (15)
+  }
 }
