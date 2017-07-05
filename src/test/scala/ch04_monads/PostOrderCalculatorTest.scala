@@ -17,4 +17,13 @@ class PostOrderCalculatorTest extends FlatSpec with Matchers {
     evalOne("-").runA(init).value should be (4)
     evalOne("/").runA(init).value should be (3)
   }
+
+  it should "run a program" in {
+    val program = for {
+      _ <- evalOne("1")
+      _ <- evalOne("2")
+      ans <- evalOne("+")
+    } yield ans
+    program.runA(Nil).value should be (3)
+  }
 }
