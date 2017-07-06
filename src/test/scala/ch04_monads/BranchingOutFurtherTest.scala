@@ -9,8 +9,8 @@ class BranchingOutFurtherTest extends FlatSpec with Matchers {
   def duplicate[A](a: A): Tree[A] =
     Branch(Leaf(a), Leaf(a))
 
-  val someLeaf = Leaf(1)
-  val someBranch = Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))
+  val someLeaf: Tree[Int] = Leaf(1)
+  val someBranch: Tree[Int] = Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))
 
 
   behavior of "TreeMonad"
@@ -34,11 +34,12 @@ class BranchingOutFurtherTest extends FlatSpec with Matchers {
   }
 
   it should "support for-comprehensions when the monad is in the implicit scope" in {
-    import cats.syntax.all._
+    import cats.syntax.flatMap._
+    import cats.syntax.functor._
     implicit val tm = treeMonad
     val t = for {
-      a <- someLeaf: Tree[Int]
-      b <- someBranch: Tree[Int]
+      a <- someLeaf
+      b <- someBranch
     } yield a + b
     t should be (Branch(Leaf(2), Branch(Leaf(3), Leaf(4))))
   }
