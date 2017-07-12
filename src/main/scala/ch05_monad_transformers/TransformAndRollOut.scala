@@ -4,7 +4,8 @@ import cats.data.EitherT
 import cats.instances.all._
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{Await, Future}
+import scala.concurrent.duration._
 
 object TransformAndRollOut {
   // type Response[A] = Future[Either[String, A]]
@@ -24,4 +25,11 @@ object TransformAndRollOut {
     level1 <- getPowerLevel(ally1)
     level2 <- getPowerLevel(ally2)
   } yield level1 + level2 > 15
+
+  def tacticalReport(ally1: String, ally2: String): String =
+    Await.result(canSpecialMove(ally1, ally2).value, 1.second) match {
+      case Left(errorMessage) => s"Comms error: $errorMessage"
+      case Right(canDoIt) if canDoIt => s"$ally1 and $ally2 are ready to roll out!"
+      case Right(_) => s"$ally1 and $ally2 need a recharge"
+    }
 }
