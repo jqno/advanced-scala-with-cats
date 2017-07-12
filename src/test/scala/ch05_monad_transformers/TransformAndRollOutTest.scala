@@ -16,6 +16,21 @@ class TransformAndRollOutTest extends FlatSpec with Matchers with ScalaFutures {
   }
 
 
+  behavior of "canSpecialMove"
+
+  it should "allow a special move if the allies have a combined powerlevel of over 15" in {
+    canSpecialMove("Bumblebee", "Hot Rod").unwrap should be (true)
+  }
+
+  it should "not allow special move if the allies are weak" in {
+    canSpecialMove("Bumblebee", "Jazz").unwrap should be (false)
+  }
+
+  it should "fail with a message if either autobot is unreachable" in {
+    canSpecialMove("Bumblebee", "Ratchet").unwrapError should be ("Ratchet is unavailable")
+  }
+
+
   implicit class UnwrapForTest[A](value: Response[A]) {
     def unwrap: A = value.value.futureValue.right.get
     def unwrapError: String = value.value.futureValue.left.get

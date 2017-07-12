@@ -1,6 +1,7 @@
 package ch05_monad_transformers
 
 import cats.data.EitherT
+import cats.instances.all._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -18,4 +19,9 @@ object TransformAndRollOut {
   def getPowerLevel(autobot: String): Response[Int] =
     EitherT.apply[Future, String, Int](
       Future(powerLevels.get(autobot).toRight(s"$autobot is unavailable")))
+
+  def canSpecialMove(ally1: String, ally2: String): Response[Boolean] = for {
+    level1 <- getPowerLevel(ally1)
+    level2 <- getPowerLevel(ally2)
+  } yield level1 + level2 > 15
 }
