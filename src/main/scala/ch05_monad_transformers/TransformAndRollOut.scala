@@ -1,7 +1,6 @@
 package ch05_monad_transformers
 
 import cats.data.EitherT
-import cats.instances.all._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -17,8 +16,6 @@ object TransformAndRollOut {
   )
 
   def getPowerLevel(autobot: String): Response[Int] =
-    powerLevels.get(autobot) match {
-      case Some(lvl) => EitherT.right(Future(lvl))
-      case None => EitherT.left(Future(s"$autobot is unavailable"))
-    }
+    EitherT.apply[Future, String, Int](
+      Future(powerLevels.get(autobot).toRight(s"$autobot is unavailable")))
 }
