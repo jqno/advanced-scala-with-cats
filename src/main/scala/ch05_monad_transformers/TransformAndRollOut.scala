@@ -29,7 +29,7 @@ object TransformAndRollOut {
   def tacticalReport(ally1: String, ally2: String): String =
     Await.result(canSpecialMove(ally1, ally2).value, 1.second) match {
       case Left(errorMessage) => s"Comms error: $errorMessage"
-      case Right(canDoIt) if canDoIt => s"$ally1 and $ally2 are ready to roll out!"
-      case Right(_) => s"$ally1 and $ally2 need a recharge"
+      case Right(true) => s"$ally1 and $ally2 are ready to roll out!"
+      case Right(false) => s"$ally1 and $ally2 need a recharge"
     }
 }
