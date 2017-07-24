@@ -7,11 +7,11 @@ object FormValidation {
   type FormData = Map[String, String]
   type ErrorsOr[A] = Either[List[String], A]
 
-  def getValue(map: FormData, fieldName: String): ErrorsOr[String] =
-    map.get(fieldName).toRight(List(s"Field name $fieldName not specified"))
+  def getValue(data: FormData, fieldName: String): ErrorsOr[String] =
+    data.get(fieldName).toRight(List(s"Field name $fieldName not specified"))
 
-  def parseInt(map: FormData, fieldName: String): ErrorsOr[Int] =
-    getValue(map, fieldName).right.flatMap { v =>
+  def parseInt(data: FormData, fieldName: String): ErrorsOr[Int] =
+    getValue(data, fieldName).right.flatMap { v =>
       Try(v.toInt).toOption.toRight(List(s"Value $v in $fieldName was not an int"))
     }
 
@@ -20,4 +20,10 @@ object FormValidation {
 
   def nonNegative(value: Int): ErrorsOr[Int] =
     if (value < 0) Left(List(s"$value was negative")) else Right(value)
+
+  def readName(data: FormData): ErrorsOr[String] =
+    getValue(data, "name").right.flatMap(nonBlank)
+
+  def readAge(data: FormData): ErrorsOr[Int] =
+    parseInt(data, "age").right.flatMap(nonNegative)
 }
