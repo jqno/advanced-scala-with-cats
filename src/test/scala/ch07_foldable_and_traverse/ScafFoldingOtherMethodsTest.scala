@@ -27,7 +27,7 @@ class ScafFoldingOtherMethodsTest extends FlatSpec with Matchers {
   it should "behave as expected" in {
     filter(someList)(_ % 2 == 0) should be (List(2))
   }
-  
+
 
   behavior of "sum"
 
