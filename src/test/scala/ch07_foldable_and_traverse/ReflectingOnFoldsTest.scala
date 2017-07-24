@@ -4,19 +4,19 @@ import org.scalatest.{FlatSpec, Matchers}
 
 class ReflectingOnFoldsTest extends FlatSpec with Matchers {
 
-  val someList = List(List(1, 2), List(3))
+  val someList = List(1, 2, 3)
 
 
   behavior of "foldLeft"
 
-  it should "not compile" in {
-    "someList.foldLeft(List.empty[List[Int]])(_ :: _)" shouldNot compile
+  it should "reverse the list" in {
+    someList.foldLeft(List.empty[Int])((a, i) => i :: a) should be (someList.reverse)
   }
 
 
   behavior of "foldRight"
 
   it should "re-create the list we already had" in {
-    someList.foldRight(List.empty[List[Int]])(_ :: _) should be (someList)
+    someList.foldRight(List.empty[Int])((i, a) => i :: a) should be (someList)
   }
 }
