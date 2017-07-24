@@ -10,6 +10,10 @@ class FormValidationSpec extends FlatSpec with Matchers {
   behavior of "getValue"
 
   it should "get the value of an existing key" in {
-    getValue(someMap, "name") should be ("Pietje")
+    getValue(someMap, "name") should be (Right("Pietje"))
+  }
+
+  it should "give an error message when the fieldName does not exist" in {
+    getValue(someMap, "invalid") should be (Left(List("Field name invalid not specified")))
   }
 }
