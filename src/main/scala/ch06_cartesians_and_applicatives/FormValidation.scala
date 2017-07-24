@@ -14,4 +14,10 @@ object FormValidation {
     getValue(map, fieldName).right.flatMap { v =>
       Try(v.toInt).toOption.toRight(List(s"Value $v in $fieldName was not an int"))
     }
+
+  def nonBlank(value: String): ErrorsOr[String] =
+    if (value.trim == "") Left(List("String was blank")) else Right(value)
+
+  def nonNegative(value: Int): ErrorsOr[Int] =
+    if (value < 0) Left(List(s"$value was negative")) else Right(value)
 }

@@ -28,4 +28,30 @@ class FormValidationSpec extends FlatSpec with Matchers {
   it should "give an error message when the field is not an int" in {
     parseInt(someMap, "name") should be (Left(List("Value Pietje in name was not an int")))
   }
+
+
+  behavior of "nonBlank"
+
+  it should "succeed if the string isn't blank" in {
+    nonBlank("hello") should be (Right("hello"))
+  }
+
+  it should "fail if the string is only spaces" in {
+    nonBlank("   ") should be (Left(List("String was blank")))
+  }
+
+
+  behavior of "nonNegative"
+
+  it should "succeed if the int is positive" in {
+    nonNegative(42) should be (Right(42))
+  }
+
+  it should "succeed if the int is 0" in {
+    nonNegative(0) should be (Right(0))
+  }
+
+  it should "fail if the int is negative" in {
+    nonNegative(-2) should be (Left(List("-2 was negative")))
+  }
 }
