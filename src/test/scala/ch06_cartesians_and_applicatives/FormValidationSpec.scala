@@ -1,5 +1,6 @@
 package ch06_cartesians_and_applicatives
 
+import cats.data.Validated._
 import ch06_cartesians_and_applicatives.FormValidation._
 import org.scalatest.{FlatSpec, Matchers}
 
@@ -53,5 +54,18 @@ class FormValidationSpec extends FlatSpec with Matchers {
 
   it should "fail if the int is negative" in {
     nonNegative(-2) should be (Left(List("-2 was negative")))
+  }
+
+
+  behavior of "readUser"
+
+  it should "read a valid user" in {
+    readUser(someMap) should be (Valid(User("Pietje", 42)))
+  }
+
+  it should "reject a user with a blank name and a negative age with both error messages" in {
+    val invalidData = Map("name" -> "", "age" -> "-2")
+    val errorMessages = List("String was blank", "-2 was negative")
+    readUser(invalidData) should be (Invalid(errorMessages))
   }
 }

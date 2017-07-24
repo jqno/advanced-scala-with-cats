@@ -1,11 +1,18 @@
 package ch06_cartesians_and_applicatives
 
+import cats.data.Validated
+import cats.instances.all._
+import cats.syntax.all._
+
 import scala.util.Try
 
 object FormValidation {
 
+  case class User(name: String, age: Int)
+
   type FormData = Map[String, String]
   type ErrorsOr[A] = Either[List[String], A]
+  type AllErrorsOr[A] = Validated[List[String], A]
 
   def getValue(data: FormData, fieldName: String): ErrorsOr[String] =
     data.get(fieldName).toRight(List(s"Field name $fieldName not specified"))
@@ -26,4 +33,10 @@ object FormValidation {
 
   def readAge(data: FormData): ErrorsOr[Int] =
     parseInt(data, "age").right.flatMap(nonNegative)
+
+  def readUser(data: FormData): AllErrorsOr[User] = {
+    val name = readName(data).toValidated
+    val age = readAge(data).toValidated
+    (name |@| age).map(User.apply)
+  }
 }
