@@ -1,5 +1,6 @@
 package ch07_foldable_and_traverse
 
+import cats.data.Validated.{Invalid, Valid}
 import cats.instances.vector._
 import ch07_foldable_and_traverse.TraversingWith._
 import org.scalatest.{FlatSpec, Matchers}
@@ -26,12 +27,20 @@ class TraversingWithTest extends FlatSpec with Matchers {
 
   it should "have the right return type" in {
     val in = List(1, 2, 3)
-    "val q: Option[List[Int]] = process(in)" should compile
+    "val q: Option[List[Int]] = processToOption(in)" should compile
   }
 
   it should "produce the expected output" in {
-    process(List(2, 4, 6)) should be (Some(List(2, 4, 6)))
-    process(List(1, 2, 3)) should be (None)
+    processToOption(List(2, 4, 6)) should be (Some(List(2, 4, 6)))
+    processToOption(List(1, 2, 3)) should be (None)
+  }
+
+
+  behavior of "Traversing with Validated"
+
+  it should "produce the expected output" in {
+    processToValidated(List(2, 4, 6)) should be (Valid(List(2, 4, 6)))
+    processToValidated(List(1, 2, 3)) should be (Invalid(List("1 is not even", "3 is not even")))
   }
 
 }
