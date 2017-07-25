@@ -21,4 +21,17 @@ class TraversingWithTest extends FlatSpec with Matchers {
     listSequence(in) should be (expected)
   }
 
+
+  behavior of "Traversing with Options"
+
+  it should "have the right return type" in {
+    val in = List(1, 2, 3)
+    "val q: Option[List[Int]] = process(in)" should compile
+  }
+
+  it should "produce the expected output" in {
+    process(List(2, 4, 6)) should be (Some(List(2, 4, 6)))
+    process(List(1, 2, 3)) should be (None)
+  }
+
 }

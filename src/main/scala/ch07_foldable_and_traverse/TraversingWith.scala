@@ -1,6 +1,7 @@
 package ch07_foldable_and_traverse
 
 import cats.Applicative
+import cats.instances.option._
 import cats.syntax.applicative._
 import cats.syntax.cartesian._
 
@@ -15,5 +16,8 @@ object TraversingWith {
 
   def listSequence[F[_]: Applicative, A](list: List[F[A]]): F[List[A]] =
     listTraverse(list)(identity)
+
+  def process(inputs: List[Int]) =
+    listTraverse(inputs)(n => if (n % 2 == 0) Some(n) else None)
 
 }
