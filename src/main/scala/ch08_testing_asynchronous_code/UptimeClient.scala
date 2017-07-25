@@ -13,6 +13,7 @@ trait RealUptimeClient extends UptimeClient[Future] {
   override def getUptime(hostname: String): Future[Int]
 }
 
-trait TestUptimeClient extends UptimeClient[Id] {
-  override def getUptime(hostname: String): Id[Int]
+class TestUptimeClient(hosts: Map[String, Int]) extends UptimeClient[Id] {
+  override def getUptime(hostname: String): Int =
+    hosts.getOrElse(hostname, 0)
 }
