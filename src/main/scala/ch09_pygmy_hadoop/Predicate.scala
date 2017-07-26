@@ -8,7 +8,7 @@ import cats.syntax.semigroup._
 
 sealed trait Predicate[E, A] {
   def apply(value: A)(implicit ev: Semigroup[E]): Validated[E, A] = this match {
-    case Pure(f) =>
+    case PurePredicate(f) =>
       f(value)
     case And(c1, c2) =>
       (c1(value) |@| c2(value)).map((_, _) => value)
@@ -26,6 +26,6 @@ sealed trait Predicate[E, A] {
     Or(this, that)
 }
 
-case class Pure[E, A](f: A => Validated[E, A]) extends Predicate[E, A]
+case class PurePredicate[E, A](f: A => Validated[E, A]) extends Predicate[E, A]
 case class And[E, A](c1: Predicate[E, A], c2: Predicate[E, A]) extends Predicate[E, A]
 case class Or[E, A](c1: Predicate[E, A], c2: Predicate[E, A]) extends Predicate[E, A]
