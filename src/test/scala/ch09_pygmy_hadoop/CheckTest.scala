@@ -1,26 +1,35 @@
 package ch09_pygmy_hadoop
 
-import cats.instances.string._
+import cats.instances.list._
 import org.scalatest.{FlatSpec, Matchers}
 
 class CheckTest extends FlatSpec with Matchers {
 
-  val right: Check[String, String] = Right("value")
-  val left1: Check[String, String] = Left("a")
-  val left2: Check[String, String] = Left("b")
+  val isEven: Check[List[String], Int] = Pure {
+    case i if i % 2 == 0 => Right(i)
+    case i => Left(List(s"$i is odd"))
+  }
+
+  val isPositive: Check[List[String], Int] = Pure {
+    case i if i >= 0 => Right(i)
+    case i => Left(List(s"$i is negative"))
+  }
+
+  val check = isEven and isPositive
+
 
   behavior of "and"
 
   it should "return the value of two Rights" in {
-    (right and right) should be (right)
+    check(2) should be (Right(2))
   }
 
   it should "return the error when one of the sides is a Left" in {
-    (left1 and right) should be (left1)
-    (right and left2) should be (left2)
+    check(1) should be (Left(List("1 is odd")))
+    check(-2) should be (Left(List("-2 is negative")))
   }
 
   it should "combine the errors" in {
-    (left1 and left2) should be (Left("ab"))
+    check(-1) should be (Left(List("-1 is odd", "-1 is negative")))
   }
 }
