@@ -4,14 +4,14 @@ import cats.data.Validated.{Invalid, Valid}
 import cats.instances.list._
 import org.scalatest.{FlatSpec, Matchers}
 
-class CheckTest extends FlatSpec with Matchers {
+class PredicateTest extends FlatSpec with Matchers {
 
-  val isEven: Check[List[String], Int] = Pure {
+  val isEven: Predicate[List[String], Int] = Pure {
     case i if i % 2 == 0 => Valid(i)
     case i => Invalid(List(s"$i is odd"))
   }
 
-  val isPositive: Check[List[String], Int] = Pure {
+  val isPositive: Predicate[List[String], Int] = Pure {
     case i if i >= 0 => Valid(i)
     case i => Invalid(List(s"$i is negative"))
   }

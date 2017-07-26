@@ -6,7 +6,7 @@ import cats.data.Validated.{Invalid, Valid}
 import cats.syntax.cartesian._
 import cats.syntax.semigroup._
 
-sealed trait Check[E, A] {
+sealed trait Predicate[E, A] {
   def apply(value: A)(implicit ev: Semigroup[E]): Validated[E, A] = this match {
     case Pure(f) =>
       f(value)
@@ -19,13 +19,13 @@ sealed trait Check[E, A] {
     }
   }
 
-  def and(that: Check[E, A]): Check[E, A] =
+  def and(that: Predicate[E, A]): Predicate[E, A] =
     And(this, that)
 
-  def or(that: Check[E, A]): Check[E, A] =
+  def or(that: Predicate[E, A]): Predicate[E, A] =
     Or(this, that)
 }
 
-case class Pure[E, A](f: A => Validated[E, A]) extends Check[E, A]
-case class And[E, A](c1: Check[E, A], c2: Check[E, A]) extends Check[E, A]
-case class Or[E, A](c1: Check[E, A], c2: Check[E, A]) extends Check[E, A]
+case class Pure[E, A](f: A => Validated[E, A]) extends Predicate[E, A]
+case class And[E, A](c1: Predicate[E, A], c2: Predicate[E, A]) extends Predicate[E, A]
+case class Or[E, A](c1: Predicate[E, A], c2: Predicate[E, A]) extends Predicate[E, A]
