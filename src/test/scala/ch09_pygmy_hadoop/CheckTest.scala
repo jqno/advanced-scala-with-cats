@@ -21,11 +21,11 @@ class CheckTest extends FlatSpec with Matchers {
 
   behavior of "and"
 
-  it should "return the value of two Rights" in {
+  it should "return the value of two valid values" in {
     check(2) should be (Valid(2))
   }
 
-  it should "return the error when one of the sides is a Left" in {
+  it should "return the error when one of the sides is invalid" in {
     check(1) should be (Invalid(List("1 is odd")))
     check(-2) should be (Invalid(List("-2 is negative")))
   }
