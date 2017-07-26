@@ -16,21 +16,38 @@ class CheckTest extends FlatSpec with Matchers {
     case i => Invalid(List(s"$i is negative"))
   }
 
-  val check = isEven and isPositive
+  val and = isEven and isPositive
+  val or = isEven or isPositive
 
 
   behavior of "and"
 
   it should "return the value of two valid values" in {
-    check(2) should be (Valid(2))
+    and(2) should be (Valid(2))
   }
 
   it should "return the error when one of the sides is invalid" in {
-    check(1) should be (Invalid(List("1 is odd")))
-    check(-2) should be (Invalid(List("-2 is negative")))
+    and(1) should be (Invalid(List("1 is odd")))
+    and(-2) should be (Invalid(List("-2 is negative")))
   }
 
   it should "combine the errors" in {
-    check(-1) should be (Invalid(List("-1 is odd", "-1 is negative")))
+    and(-1) should be (Invalid(List("-1 is odd", "-1 is negative")))
+  }
+
+
+  behavior of "or"
+
+  it should "return the value of two valid values" in {
+    or(2) should be (Valid(2))
+  }
+
+  it should "return the value when one of the sides is valid" in {
+    or(1) should be (Valid(1))
+    or(-2) should be (Valid(-2))
+  }
+
+  it should "combine the errors" in {
+    or(-1) should be (Invalid(List("-1 is odd", "-1 is negative")))
   }
 }
