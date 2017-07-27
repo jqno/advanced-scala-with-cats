@@ -5,6 +5,7 @@ import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
 import cats.syntax.cartesian._
 import cats.syntax.semigroup._
+import cats.syntax.validated._
 import ch09_pygmy_hadoop.Predicate._
 
 sealed trait Predicate[E, A] {
@@ -30,6 +31,9 @@ sealed trait Predicate[E, A] {
 object Predicate {
   def apply[E, A](f: A => Validated[E, A]): Predicate[E, A] =
     Pure(f)
+
+  def lift[E, A](error: E, f: A => Boolean): Predicate[E, A] =
+    Pure(a => if (f(a)) a.valid else error.invalid)
 
   case class Pure[E, A](f: A => Validated[E, A]) extends Predicate[E, A]
   case class And[E, A](c1: Predicate[E, A], c2: Predicate[E, A]) extends Predicate[E, A]

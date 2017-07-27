@@ -20,10 +20,18 @@ sealed trait Check[E, A, B] {
 }
 
 object Check {
-  def apply[E, A](p: Predicate[E, A]): Check[E, A, A] =
-    Pure(p)
+  def apply[E, A, B](f: A => Validated[E, B]): Check[E, A, B] =
+    Pure(f)
 
-  case class Pure[E, A](p: Predicate[E, A]) extends Check[E, A, A] {
+  def apply[E, A](p: Predicate[E, A]): Check[E, A, A] =
+    PurePredicate(p)
+
+  case class Pure[E, A, B](f: A => Validated[E, B]) extends Check[E, A, B] {
+    override def apply(value: A)(implicit ev: Semigroup[E]): Validated[E, B] =
+      f(value)
+  }
+
+  case class PurePredicate[E, A](p: Predicate[E, A]) extends Check[E, A, A] {
     override def apply(value: A)(implicit ev: Semigroup[E]): Validated[E, A] =
       p(value)
   }
