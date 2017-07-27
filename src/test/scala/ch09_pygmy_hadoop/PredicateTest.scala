@@ -6,12 +6,12 @@ import org.scalatest.{FlatSpec, Matchers}
 
 class PredicateTest extends FlatSpec with Matchers {
 
-  val isEven: Predicate[List[String], Int] = PurePredicate {
+  val isEven: Predicate[List[String], Int] = Predicate {
     case i if i % 2 == 0 => Valid(i)
     case i => Invalid(List(s"$i is odd"))
   }
 
-  val isPositive: Predicate[List[String], Int] = PurePredicate {
+  val isPositive: Predicate[List[String], Int] = Predicate {
     case i if i >= 0 => Valid(i)
     case i => Invalid(List(s"$i is negative"))
   }

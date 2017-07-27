@@ -5,10 +5,11 @@ import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
 import cats.syntax.cartesian._
 import cats.syntax.semigroup._
+import ch09_pygmy_hadoop.Predicate._
 
 sealed trait Predicate[E, A] {
   def apply(value: A)(implicit ev: Semigroup[E]): Validated[E, A] = this match {
-    case PurePredicate(f) =>
+    case Pure(f) =>
       f(value)
     case And(c1, c2) =>
       (c1(value) |@| c2(value)).map((_, _) => value)
@@ -26,6 +27,11 @@ sealed trait Predicate[E, A] {
     Or(this, that)
 }
 
-case class PurePredicate[E, A](f: A => Validated[E, A]) extends Predicate[E, A]
-case class And[E, A](c1: Predicate[E, A], c2: Predicate[E, A]) extends Predicate[E, A]
-case class Or[E, A](c1: Predicate[E, A], c2: Predicate[E, A]) extends Predicate[E, A]
+object Predicate {
+  def apply[E, A](f: A => Validated[E, A]): Predicate[E, A] =
+    Pure(f)
+
+  case class Pure[E, A](f: A => Validated[E, A]) extends Predicate[E, A]
+  case class And[E, A](c1: Predicate[E, A], c2: Predicate[E, A]) extends Predicate[E, A]
+  case class Or[E, A](c1: Predicate[E, A], c2: Predicate[E, A]) extends Predicate[E, A]
+}
