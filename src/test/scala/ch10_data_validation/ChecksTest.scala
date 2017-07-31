@@ -1,8 +1,8 @@
-package ch09_pygmy_hadoop
+package ch10_data_validation
 
 import cats.data.NonEmptyList
-import ch09_pygmy_hadoop.Checks._
-import ch09_pygmy_hadoop.Predicates.Errors
+import ch10_data_validation.Checks._
+import ch10_data_validation.Predicates.Errors
 import org.scalatest.matchers.{MatchResult, Matcher}
 import org.scalatest.{FlatSpec, Matchers}
 

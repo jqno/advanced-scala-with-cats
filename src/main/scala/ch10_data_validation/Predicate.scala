@@ -1,4 +1,4 @@
-package ch09_pygmy_hadoop
+package ch10_data_validation
 
 import cats.Semigroup
 import cats.data.Validated
@@ -6,7 +6,7 @@ import cats.data.Validated.{Invalid, Valid}
 import cats.syntax.cartesian._
 import cats.syntax.semigroup._
 import cats.syntax.validated._
-import ch09_pygmy_hadoop.Predicate._
+import ch10_data_validation.Predicate._
 
 sealed trait Predicate[E, A] {
   def apply(value: A)(implicit ev: Semigroup[E]): Validated[E, A] = this match {

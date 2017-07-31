@@ -1,9 +1,9 @@
-package ch09_pygmy_hadoop
+package ch10_data_validation
 
 import cats.data.Kleisli
 import cats.instances.all._
 import cats.syntax.all._
-import ch09_pygmy_hadoop.Predicates._
+import ch10_data_validation.Predicates._
 
 object Checks {
 

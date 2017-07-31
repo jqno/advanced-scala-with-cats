@@ -1,10 +1,10 @@
-package ch09_pygmy_hadoop
+package ch10_data_validation
 
 import cats.Semigroup
 import cats.data.Validated
 import cats.data.Validated.{Invalid, Valid}
 import cats.syntax.either._
-import ch09_pygmy_hadoop.CheckNOPE._
+import ch10_data_validation.CheckNOPE._
 
 sealed trait CheckNOPE[E, A, B] {
   def apply(value: A)(implicit ev: Semigroup[E]): Validated[E, B]

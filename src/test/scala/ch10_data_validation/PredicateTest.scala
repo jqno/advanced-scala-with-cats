@@ -1,4 +1,4 @@
-package ch09_pygmy_hadoop
+package ch10_data_validation
 
 import cats.data.Validated.{Invalid, Valid}
 import cats.instances.list._
