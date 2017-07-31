@@ -1,11 +1,10 @@
 package ch09_pygmy_hadoop
 
-import org.scalatest.{FlatSpec, Matchers}
-import Checks._
-import cats.data.{NonEmptyList, Validated}
-import cats.data.Validated.{Invalid, Valid}
+import cats.data.NonEmptyList
+import ch09_pygmy_hadoop.Checks._
 import ch09_pygmy_hadoop.Predicates.Errors
 import org.scalatest.matchers.{MatchResult, Matcher}
+import org.scalatest.{FlatSpec, Matchers}
 
 class ChecksTest extends FlatSpec with Matchers {
 
@@ -24,11 +23,11 @@ class ChecksTest extends FlatSpec with Matchers {
   }
 
   it should "succeed if the username is long enough" in {
-    usernameCheck("aaaa").isValid should be (true)
+    usernameCheck("aaaa").isRight should be (true)
   }
 
   it should "succeed with all alphanumeric characters" in {
-    usernameCheck("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890").isValid should be (true)
+    usernameCheck("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890").isRight should be (true)
   }
 
 
@@ -55,20 +54,20 @@ class ChecksTest extends FlatSpec with Matchers {
   }
 
   it should "succeed if the email is valid" in {
-    emailCheck("email@address.com").isValid should be (true)
+    emailCheck("email@address.com").isRight should be (true)
   }
 
 
   def beInvalidWithErrors(head: String, tail: String*) =
     new InvalidWithErrorsMatcher(head, tail:_*)
 
-  class InvalidWithErrorsMatcher(head: String, tail: String*) extends Matcher[Validated[Errors, _]] {
-    override def apply(left: Validated[Errors, _]): MatchResult = {
+  class InvalidWithErrorsMatcher(head: String, tail: String*) extends Matcher[Either[Errors, _]] {
+    override def apply(left: Either[Errors, _]): MatchResult = {
       val errors = NonEmptyList(head, tail.toList)
       left match {
-        case Valid(_) => MatchResult(false, s"$left should have been invalid", "")
-        case Invalid(err) if err == errors => MatchResult(true, "", "")
-        case Invalid(err) => MatchResult(false, s"$err should have been $errors", "")
+        case Right(_) => MatchResult(false, s"$left should have been invalid", "")
+        case Left(err) if err == errors => MatchResult(true, "", "")
+        case Left(err) => MatchResult(false, s"$err should have been $errors", "")
       }
     }
   }
