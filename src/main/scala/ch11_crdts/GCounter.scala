@@ -7,6 +7,9 @@ final case class GCounter(counters: Map[String, Int]) {
   def get: Int =
     counters.values.sum
 
-  def merge(that: GCounter): GCounter =
-    ???
+  def merge(that: GCounter): GCounter = GCounter {
+    for {
+      (machine, amount) <- counters
+    } yield (machine, amount max that.counters(machine))
+  }
 }
