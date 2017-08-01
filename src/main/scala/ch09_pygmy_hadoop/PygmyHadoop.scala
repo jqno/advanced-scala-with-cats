@@ -25,10 +25,9 @@ object PygmyHadoop {
   def catsParallelFoldMap[A, B: Monoid](as: Vector[A])(f: A => B): Future[B] = {
     val cpus = Runtime.getRuntime.availableProcessors()
     val groupSize = (1.0 * as.size / cpus).ceil.toInt
-    val work = as.grouped(groupSize)
-    val batches = work.map { w =>
-      Future { w.foldMap(f) }
-    }
-    Future.sequence(batches).map(_.reduce(_ |+| _))
+    as
+      .grouped(groupSize).toVector
+      .traverse(w => Future { w.foldMap(f) })
+      .map(_.combineAll)
   }
 }
