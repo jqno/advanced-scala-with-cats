@@ -8,8 +8,8 @@ final case class GCounter(counters: Map[String, Int]) {
     counters.values.sum
 
   def merge(that: GCounter): GCounter = GCounter {
-    for {
+    that.counters ++ (for {
       (machine, amount) <- counters
-    } yield (machine, amount max that.counters(machine))
+    } yield (machine, amount max that.counters.getOrElse(machine, 0)))
   }
 }

@@ -32,10 +32,11 @@ class GCounterTest extends FlatSpec with Matchers {
   behavior of "merge"
 
   it should "combine the values of two GCounters" in {
-    val otherGCounter = GCounter(Map("A" -> 1, "B" -> 6, "C" -> 4))
+    val otherGCounter = GCounter(Map("B" -> 6, "C" -> 2, "D" -> 1))
     val actual = (someGCounter merge otherGCounter).counters
     actual("A") should be (2)
     actual("B") should be (6)
-    actual("C") should be (4)
+    actual("C") should be (3)
+    actual("D") should be (1)
   }
 }
