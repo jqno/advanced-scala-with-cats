@@ -5,6 +5,11 @@ import cats.instances.all._
 import cats.syntax.all._
 
 final case class GenericGCounter[A: BoundedSemiLattice](counters: Map[String, A]) {
+
+  // The problem: at least for Ints, we need a different monoid for increment & get
+  // (it should do addition), and a different one for merge (it should do max).
+  // Not sure how to solve this so I'm going to peek in the answers.
+
   val monoid = implicitly[Monoid[A]]
   val bsl = implicitly[BoundedSemiLattice[A]]
 
