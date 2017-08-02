@@ -1,5 +1,6 @@
 package ch11_crdts
 
+import cats.instances.all._
 import org.scalatest.{FlatSpec, Matchers}
 
 class GenericGCounterTest extends FlatSpec with Matchers {
