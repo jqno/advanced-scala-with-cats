@@ -13,8 +13,6 @@ final case class GenericGCounter[A](counters: Map[String, A]) {
     counters.values.toList.combineAll
 
   def merge(that: GenericGCounter[A])(implicit ev: BoundedSemiLattice[A]): GenericGCounter[A] = GenericGCounter {
-    that.counters ++ (for {
-      (machine, amount) <- counters
-    } yield (machine, ev.combine(amount, that.counters.getOrElse(machine, ev.empty))))
+    this.counters |+| that.counters
   }
 }
