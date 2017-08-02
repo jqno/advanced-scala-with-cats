@@ -9,7 +9,7 @@ trait BoundedSemiLattice[A] extends Monoid[A] {
 
 object BoundedSemiLattice {
   implicit val intBoundedSemiLattice = new BoundedSemiLattice[Int] {
-    override def combine(a1: Int, a2: Int): Int = a1 + a2
+    override def combine(a1: Int, a2: Int): Int = a1 max a2
     override def empty: Int = 0
   }
 
