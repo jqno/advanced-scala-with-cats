@@ -1,15 +1,23 @@
 package ch11_crdts
 
-final case class GenericGCounter(counters: Map[String, Int]) {
-  def increment(machine: String, amount: Int): GenericGCounter =
-    GenericGCounter(counters.updated(machine, counters.getOrElse(machine, 0) + amount))
+import cats.Monoid
+import cats.instances.all._
+import cats.syntax.all._
 
-  def get: Int =
-    counters.values.sum
+final case class GenericGCounter[A: BoundedSemiLattice](counters: Map[String, A]) {
+  val monoid = implicitly[Monoid[A]]
+  val bsl = implicitly[BoundedSemiLattice[A]]
 
-  def merge(that: GenericGCounter): GenericGCounter = GenericGCounter {
+  def increment(machine: String, amount: A): GenericGCounter[A] = GenericGCounter {
+    counters.updated(machine, counters.getOrElse(machine, monoid.empty) |+| amount)
+  }
+
+  def get: A =
+    counters.values.toList.combineAll
+
+  def merge(that: GenericGCounter[A]): GenericGCounter[A] = GenericGCounter {
     that.counters ++ (for {
       (machine, amount) <- counters
-    } yield (machine, amount max that.counters.getOrElse(machine, 0)))
+    } yield (machine, bsl.combine(amount, that.counters.getOrElse(machine, monoid.empty))))
   }
 }
